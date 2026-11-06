@@ -18,6 +18,19 @@ app.get("/keiyo", (req, res) => {
   res.render('db2', { data: station });
 });
 
+app.get("/keiyo_add", (req, res) => {
+  let id = req.query.id;
+  let code = req.query.code;
+  let name = req.query.name;
+  let newdata = { id: id, code: code, name: name };
+  station.push(newdata);
+  // 登録後の画面を切り替えて、スライド26・27ページの動きを比較する。
+  if (req.query.next === 'input') {
+    return res.redirect('/public/keiyo_add.html');
+  }
+  res.render('db2', { data: station });
+});
+
 app.get("/hello1", (req, res) => {
   const message1 = "Hello world";
   const message2 = "Bon jour";
