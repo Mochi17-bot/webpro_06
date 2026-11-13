@@ -13,7 +13,6 @@ let station = [
   { id:6, code:"JE05", name:"新浦安駅"},
 ];
 
-// 9回の授業：詳細表示に使う京葉線の駅データ
 let station2 = [
   { id:1, code:"JE01", name:"東京駅", change:"総武本線，中央線，etc", passengers:403831, distance:0 },
   { id:2, code:"JE02", name:"八丁堀駅", change:"日比谷線", passengers:31071, distance:1.2 },
