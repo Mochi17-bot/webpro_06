@@ -1,11 +1,14 @@
 "use strict";
 
 const express = require("express");
+const registerReportApps = require("./report-apps");
 const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
+
+registerReportApps(app);
 
 let station = [
   { id:1, code:"JE01", name:"東京駅"},
@@ -177,4 +180,5 @@ app.get("/janken", (req, res) => {
   res.render( 'janken', display );
 });
 
-app.listen(8080, () => console.log("Example app listening on port 8080!"));
+const port = Number(process.env.PORT || 8080);
+app.listen(port, () => console.log("Example app listening on port " + port + "!"));

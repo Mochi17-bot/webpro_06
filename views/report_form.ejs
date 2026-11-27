@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> の<%= edit ? "編集" : "新規登録" %></title>
+</head>
+<body>
+  <main>
+    <h1><%= title %> の<%= edit ? "編集" : "新規登録" %></h1>
+    <% if (errors.length) { %>
+      <ul role="alert">
+        <% for (const error of errors) { %>
+          <li><%= error %></li>
+        <% } %>
+      </ul>
+    <% } %>
+    <form method="post" action="<%= action %>">
+      <% for (const field of fields) { %>
+        <% const value = values[field.name] ?? ""; %>
+        <p>
+          <label for="<%= field.name %>"><%= field.label %><%= field.required ? "（必須）" : "" %></label><br>
+          <% if (field.options) { %>
+            <select id="<%= field.name %>" name="<%= field.name %>" required>
+              <option value="">選択してください</option>
+              <% for (const option of field.options) { %>
+                <option<% if (value === option) { %> selected<% } %>><%= option %></option>
+              <% } %>
+            </select>
+          <% } else if (field.type === "textarea") { %>
+            <textarea id="<%= field.name %>" name="<%= field.name %>" rows="5" cols="35"><%= value %></textarea>
+          <% } else { %>
+            <input id="<%= field.name %>" name="<%= field.name %>" type="<%= field.type || "text" %>" value="<%= value %>"<% if (field.required) { %> required<% } %><% if (field.type === "number") { %> min="0" step="1"<% } %>>
+          <% } %>
+        </p>
+      <% } %>
+      <button type="submit"><%= edit ? "更新" : "登録" %></button>
+    </form>
+    <p><a href="<%= back %>">戻る</a></p>
+  </main>
+</body>
+</html>

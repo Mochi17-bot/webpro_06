@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= record[nameField] %>の詳細</title>
+</head>
+<body>
+  <main>
+    <h1><%= record[nameField] %>の詳細</h1>
+    <dl>
+      <% for (const field of fields) { %>
+        <dt><%= field.label %></dt>
+        <dd style="white-space: pre-wrap; overflow-wrap: anywhere"><%= record[field.name] === "" ? "—" : record[field.name] %></dd>
+      <% } %>
+    </dl>
+    <p><a href="<%= base %>/edit/<%= record.id %>">編集</a></p>
+    <form method="post" action="<%= base %>/delete/<%= record.id %>" onsubmit="return confirm('このデータを削除しますか？');">
+      <button type="submit">削除</button>
+    </form>
+    <p><a href="<%= base %>">一覧へ戻る</a></p>
+  </main>
+</body>
+</html>

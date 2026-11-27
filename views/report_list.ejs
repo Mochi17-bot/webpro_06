@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+</head>
+<body>
+  <main>
+    <h1><%= title %></h1>
+    <p><a href="<%= base %>/create">新規登録</a></p>
+    <% if (records.length) { %>
+      <table>
+        <thead>
+          <tr>
+            <% for (const field of fields) { %>
+              <th scope="col"><%= field.label %></th>
+            <% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (const record of records) { %>
+            <tr>
+              <% for (const [index, field] of fields.entries()) { %>
+                <% if (index === 0) { %>
+                  <td><a href="<%= base %>/<%= record.id %>"><%= record[field.name] %></a></td>
+                <% } else { %>
+                  <td><%= record[field.name] === "" ? "—" : record[field.name] %></td>
+                <% } %>
+              <% } %>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>登録データはありません。</p>
+    <% } %>
+    <p><a href="/report">アプリ一覧へ</a></p>
+  </main>
+</body>
+</html>
