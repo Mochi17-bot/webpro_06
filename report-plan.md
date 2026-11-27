@@ -4,19 +4,21 @@
 
 一覧から詳細を見られるアプリを3つ作る。各アプリでデータの一覧・詳細表示、追加、変更、削除を行う。データは変数に記録する。JavaScriptファイルの先頭には `"use strict";` を付ける。
 
-### 共通のAPI
+### 共通のURLと操作
 
-アプリごとにリソース名を決め、URLの形と操作ごとのHTTPメソッドをそろえる。サッカー選手管理は `players`、課題管理は `tasks`、好きな曲管理は `songs` を使う。
+サッカー選手管理は `/players`、課題管理は `/tasks`、好きな曲管理は `/songs` を使う。3つのアプリでURLの形をそろえ、登録・変更・削除はフォームから送信する。
 
 | 操作 | メソッド | URL |
 |---|---|---|
-| 一覧 | GET | `/api/{resource}` |
-| 詳細 | GET | `/api/{resource}/{id}` |
-| 追加 | POST | `/api/{resource}` |
-| 変更 | PUT | `/api/{resource}/{id}` |
-| 削除 | DELETE | `/api/{resource}/{id}` |
+| 一覧を表示 | GET | `/{resource}` |
+| 詳細を表示 | GET | `/{resource}/{id}` |
+| 追加画面を表示 | GET | `/{resource}/create` |
+| 登録 | POST | `/{resource}` |
+| 変更画面を表示 | GET | `/{resource}/edit/{id}` |
+| 更新 | POST | `/{resource}/update/{id}` |
+| 削除 | POST | `/{resource}/delete/{id}` |
 
-たとえば、選手IDが1の詳細は `GET /api/players/1` で取得する。3つのアプリとも一覧を起点にし、詳細から変更・削除へ進める。
+`{resource}` は `players`、`tasks`、`songs` のいずれか。登録・削除の後は一覧に、更新の後は詳細に戻る。
 
 ## 1. サッカー選手管理
 
