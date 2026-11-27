@@ -28,13 +28,24 @@
 ### 画面の流れ
 
 ```mermaid
-flowchart TD
-    A[選手一覧] -->|選手を選ぶ| B[選手の詳細]
-    A -->|新規登録| C[選手の追加]
-    C -->|登録| A
-    B -->|編集| D[選手の変更]
-    D -->|更新| B
-    B -->|削除・一覧へ戻る| A
+flowchart LR
+    L["GET /players<br/>選手一覧"]
+    D["GET /players/:id<br/>選手の詳細表示"]
+    E["GET /players/edit/:id<br/>編集画面"]
+    U["POST /players/update/:id<br/>更新処理"]
+    C["GET /players/create<br/>新規登録画面"]
+    S["POST /players<br/>新規登録処理"]
+    X["POST /players/delete/:id<br/>削除処理"]
+
+    L --> D --> E --> U
+    U --> D
+    E -->|戻る| D
+    D -->|一覧へ戻る| L
+    L --> C --> S
+    C -->|戻る| L
+    S --> L
+    D -->|削除を確定| X
+    X --> L
 ```
 
 ### データ項目
@@ -55,13 +66,24 @@ flowchart TD
 ### 画面の流れ
 
 ```mermaid
-flowchart TD
-    A[課題一覧] -->|課題を選ぶ| B[課題の詳細]
-    A -->|新規登録| C[課題の追加]
-    C -->|登録| A
-    B -->|編集| D[課題の変更]
-    D -->|更新| B
-    B -->|削除・一覧へ戻る| A
+flowchart LR
+    L["GET /tasks<br/>課題一覧"]
+    D["GET /tasks/:id<br/>課題の詳細表示"]
+    E["GET /tasks/edit/:id<br/>編集画面"]
+    U["POST /tasks/update/:id<br/>更新処理"]
+    C["GET /tasks/create<br/>新規登録画面"]
+    S["POST /tasks<br/>新規登録処理"]
+    X["POST /tasks/delete/:id<br/>削除処理"]
+
+    L --> D --> E --> U
+    U --> D
+    E -->|戻る| D
+    D -->|一覧へ戻る| L
+    L --> C --> S
+    C -->|戻る| L
+    S --> L
+    D -->|削除を確定| X
+    X --> L
 ```
 
 ### データ項目
@@ -82,13 +104,24 @@ flowchart TD
 ### 画面の流れ
 
 ```mermaid
-flowchart TD
-    A[曲一覧] -->|曲を選ぶ| B[曲の詳細・感想]
-    A -->|新規登録| C[曲の追加]
-    C -->|登録| A
-    B -->|編集| D[曲の変更]
-    D -->|更新| B
-    B -->|削除・一覧へ戻る| A
+flowchart LR
+    L["GET /songs<br/>曲一覧"]
+    D["GET /songs/:id<br/>曲の詳細と感想"]
+    E["GET /songs/edit/:id<br/>編集画面"]
+    U["POST /songs/update/:id<br/>更新処理"]
+    C["GET /songs/create<br/>新規登録画面"]
+    S["POST /songs<br/>新規登録処理"]
+    X["POST /songs/delete/:id<br/>削除処理"]
+
+    L --> D --> E --> U
+    U --> D
+    E -->|戻る| D
+    D -->|一覧へ戻る| L
+    L --> C --> S
+    C -->|戻る| L
+    S --> L
+    D -->|削除を確定| X
+    X --> L
 ```
 
 ### データ項目

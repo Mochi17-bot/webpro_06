@@ -59,14 +59,24 @@ node app5.js
 | `number` | 数値 | 背番号。0以上の整数。必須 |
 
 ```mermaid
-flowchart TD
-    L[選手一覧] -->|選手名を選ぶ| D[選手の詳細]
-    L -->|新規登録| C[選手の登録画面]
-    C -->|登録| L
-    D -->|編集| E[選手の編集画面]
-    E -->|更新| D
-    D -->|削除を確認| L
+flowchart LR
+    L["GET /players<br/>選手一覧"]
+    D["GET /players/:id<br/>選手の詳細表示"]
+    E["GET /players/edit/:id<br/>編集画面"]
+    U["POST /players/update/:id<br/>更新処理"]
+    C["GET /players/create<br/>新規登録画面"]
+    S["POST /players<br/>新規登録処理"]
+    X["POST /players/delete/:id<br/>削除処理"]
+
+    L --> D --> E --> U
+    U --> D
+    E -->|戻る| D
     D -->|一覧へ戻る| L
+    L --> C --> S
+    C -->|戻る| L
+    S --> L
+    D -->|削除を確定| X
+    X --> L
 ```
 
 ### 3.2 課題管理
@@ -82,14 +92,24 @@ flowchart TD
 | `status` | 文字列 | 未着手・進行中・完了のいずれか。必須 |
 
 ```mermaid
-flowchart TD
-    L[課題一覧] -->|課題名を選ぶ| D[課題の詳細]
-    L -->|新規登録| C[課題の登録画面]
-    C -->|登録| L
-    D -->|編集| E[課題の編集画面]
-    E -->|更新| D
-    D -->|削除を確認| L
+flowchart LR
+    L["GET /tasks<br/>課題一覧"]
+    D["GET /tasks/:id<br/>課題の詳細表示"]
+    E["GET /tasks/edit/:id<br/>編集画面"]
+    U["POST /tasks/update/:id<br/>更新処理"]
+    C["GET /tasks/create<br/>新規登録画面"]
+    S["POST /tasks<br/>新規登録処理"]
+    X["POST /tasks/delete/:id<br/>削除処理"]
+
+    L --> D --> E --> U
+    U --> D
+    E -->|戻る| D
     D -->|一覧へ戻る| L
+    L --> C --> S
+    C -->|戻る| L
+    S --> L
+    D -->|削除を確定| X
+    X --> L
 ```
 
 ### 3.3 好きな曲管理
@@ -106,12 +126,22 @@ flowchart TD
 | `impression` | 文字列 | 曲ごとの感想を1つ記録。任意 |
 
 ```mermaid
-flowchart TD
-    L[曲一覧] -->|曲名を選ぶ| D[曲の詳細と感想]
-    L -->|新規登録| C[曲の登録画面]
-    C -->|登録| L
-    D -->|編集| E[曲の編集画面]
-    E -->|更新| D
-    D -->|削除を確認| L
+flowchart LR
+    L["GET /songs<br/>曲一覧"]
+    D["GET /songs/:id<br/>曲の詳細と感想"]
+    E["GET /songs/edit/:id<br/>編集画面"]
+    U["POST /songs/update/:id<br/>更新処理"]
+    C["GET /songs/create<br/>新規登録画面"]
+    S["POST /songs<br/>新規登録処理"]
+    X["POST /songs/delete/:id<br/>削除処理"]
+
+    L --> D --> E --> U
+    U --> D
+    E -->|戻る| D
     D -->|一覧へ戻る| L
+    L --> C --> S
+    C -->|戻る| L
+    S --> L
+    D -->|削除を確定| X
+    X --> L
 ```
