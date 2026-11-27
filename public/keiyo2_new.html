@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>駅の新規登録</title>
+</head>
+<body>
+  <h2>駅の新規登録</h2>
+  <form action="/keiyo2" method="post">
+    <p><label>駅コード <input name="code" required></label></p>
+    <p><label>駅名 <input name="name" required></label></p>
+    <p><label>乗り換え線 <input name="change"></label></p>
+    <p><label>乗降客数 <input type="number" name="passengers" min="0" step="1" required></label></p>
+    <p><label>東京駅からの距離 (km) <input type="number" name="distance" min="0" step="any" required></label></p>
+    <button type="submit">登録</button>
+  </form>
+  <p><a href="/keiyo2">駅一覧に戻る</a></p>
+</body>
+</html>

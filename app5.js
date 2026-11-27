@@ -1,8 +1,11 @@
+"use strict";
+
 const express = require("express");
 const app = express();
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+app.use(express.urlencoded({ extended: true }));
 
 let station = [
   { id:1, code:"JE01", name:"東京駅"},
@@ -23,14 +26,78 @@ let station2 = [
   { id:7, code:"JE18", name:"蘇我駅", change:"内房線，外房線", passengers:31328, distance:43.0 },
 ];
 
+let nextStationId = station2.length + 1;
+
+function findStationIndex(number) {
+  if (!/^\d+$/.test(number)) return -1;
+  const id = Number(number) + 1;
+  return station2.findIndex(station => station.id === id);
+}
+
+function readStationForm(body) {
+  const { code, name, change = "", passengers, distance } = body;
+  if (![code, name, change, passengers, distance].every(value => typeof value === "string")) {
+    return null;
+  }
+
+  const passengerCount = Number(passengers);
+  const distanceKm = Number(distance);
+  if (!code.trim() || !name.trim() || !passengers.trim() || !distance.trim()
+      || !Number.isSafeInteger(passengerCount) || passengerCount < 0
+      || !Number.isFinite(distanceKm) || distanceKm < 0) {
+    return null;
+  }
+  return {
+    code: code.trim(),
+    name: name.trim(),
+    change: change.trim(),
+    passengers: passengerCount,
+    distance: distanceKm
+  };
+}
+
 app.get("/keiyo2", (req, res) => {
   res.render('keiyo2', { data: station2 });
 });
 
+app.get("/keiyo2/create", (req, res) => {
+  res.redirect('/public/keiyo2_new.html');
+});
+
 app.get("/keiyo2/:number", (req, res) => {
-  const number = req.params.number;
-  const detail = station2[number];
-  res.render('keiyo2_detail', { data: detail });
+  const index = findStationIndex(req.params.number);
+  if (index === -1) return res.status(404).send('駅が見つかりません。');
+  res.render('keiyo2_detail', { id: station2[index].id - 1, data: station2[index] });
+});
+
+app.post("/keiyo2", (req, res) => {
+  const data = readStationForm(req.body);
+  if (!data) return res.status(400).send('駅コード、駅名、乗降客数、距離を確認してください。');
+  station2.push({ id: nextStationId, ...data });
+  nextStationId += 1;
+  res.redirect(303, '/keiyo2');
+});
+
+app.get("/keiyo2/edit/:number", (req, res) => {
+  const index = findStationIndex(req.params.number);
+  if (index === -1) return res.status(404).send('駅が見つかりません。');
+  res.render('keiyo2_edit', { id: station2[index].id - 1, data: station2[index] });
+});
+
+app.post("/keiyo2/update/:number", (req, res) => {
+  const index = findStationIndex(req.params.number);
+  if (index === -1) return res.status(404).send('駅が見つかりません。');
+  const data = readStationForm(req.body);
+  if (!data) return res.status(400).send('駅コード、駅名、乗降客数、距離を確認してください。');
+  station2[index] = { id: station2[index].id, ...data };
+  res.redirect(303, '/keiyo2');
+});
+
+app.post("/keiyo2/delete/:number", (req, res) => {
+  const index = findStationIndex(req.params.number);
+  if (index === -1) return res.status(404).send('駅が見つかりません。');
+  station2.splice(index, 1);
+  res.redirect(303, '/keiyo2');
 });
 
 app.get("/keiyo", (req, res) => {
